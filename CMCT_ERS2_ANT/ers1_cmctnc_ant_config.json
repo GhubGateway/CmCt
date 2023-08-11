@@ -16,7 +16,7 @@
 	{
             "1991" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS1_data_ANT/1991/",
+                "directory" : "//efs/CmCt/datasets/ERS1_data_ANT/1991/",
                 "fileList" :
 		[
              "4910806AC.ID05.nc",
@@ -55,7 +55,7 @@
 
             "1992" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS1_data_ANT/1992/",
+                "directory" : "/efs/CmCt/datasets/ERS1_data_ANT/1992/",
                 "fileList" :
 		[
              "4920101AC.ID05.nc",
@@ -144,7 +144,7 @@
          
             "1993" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS1_data_ANT/1993/",
+                "directory" : "/efs/CmCt/datasets/ERS1_data_ANT/1993/",
                 "fileList" :
 		[
              "4930101AC.ID05.nc",
@@ -235,7 +235,7 @@
 
             "1994" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS1_data_ANT/1994/",
+                "directory" : "/efs/CmCt/datasets/ERS1_data_ANT/1994/",
                 "fileList" :
 		[
              "4940101AC.ID05.nc",
@@ -327,7 +327,7 @@
  
             "1995" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS1_data_ANT/1995/",
+                "directory" : "/efs/CmCt/datasets/ERS1_data_ANT/1995/",
                 "fileList" :
 		[
              "4950101AC.ID05.nc",
@@ -419,7 +419,7 @@
 
             "1996" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS1_data_ANT/1996/",
+                "directory" : "/efs/CmCt/datasets/ERS1_data_ANT/1996/",
                 "fileList" :
 		[
              "4960101AC.ID05.nc",

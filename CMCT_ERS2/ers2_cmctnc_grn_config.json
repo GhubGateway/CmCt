@@ -16,7 +16,7 @@
 	{
             "1995" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/1995/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/1995/",
                 "fileList" :
 		[
 		    "7950501GC.ID05.nc",
@@ -56,7 +56,7 @@
 
             "1996" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/1996/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/1996/",
                 "fileList" :
 		[
  		    "7960101GC.ID05.nc",
@@ -112,7 +112,7 @@
          
             "1997" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/1997/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/1997/",
                 "fileList" :
 		[
 		    "7970101GC.ID05.nc",
@@ -168,7 +168,7 @@
 
             "1998" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/1998/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/1998/",
                 "fileList" :
 		[
 		    "7980101GC.ID05.nc",
@@ -224,7 +224,7 @@
 
 	     "1999" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/1999/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/1999/",
                 "fileList" :
 		[
 		    "7990101GC.ID05.nc",
@@ -280,7 +280,7 @@
 
 	     "2000" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/2000/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/2000/",
                 "fileList" :
 		[
 		    "7000101GC.ID05.nc",
@@ -335,7 +335,7 @@
 
 	     "2001" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/2001/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/2001/",
                 "fileList" :
 		[
 		    "7010101GC.ID05.nc",
@@ -389,7 +389,7 @@
 	    
 	     "2002" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/2002/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/2002/",
                 "fileList" :
 		[
 		    "7020101GC.ID05.nc",
@@ -444,7 +444,7 @@
 
             "2003" :
 	    {
-                "directory" : "/home/cmct/datasets/ERS2_Data/2003/",
+                "directory" : "/efs/CmCt/datasets/ERS2_Data/2003/",
                 "fileList" :
 		[
 		    "7030101GC.ID05.nc",
