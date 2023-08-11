@@ -18,12 +18,12 @@
 ## Last SVN commit: $Id: cmct_launch_config.ksh 109 2016-07-12 07:03:38Z jguerber $
 
 ## Run directories are here
-RUNDIRS=/home/cmct/GRACE_RUNS
+RUNDIRS=/home/jovyan/efs/CmCt/RUNS
 
 ## Completed runs for retrieval.  FTPLOCAL is where we put them on the
 ## local file system.  DLLIST is the user's download file list.
-FTPLOCAL=/WWW/secure/pub/cmct               # secure site
-DLLIST=https://ggsghpcc.sgt-inc.com/cmct/download/filelist.php
+# FTPLOCAL=/WWW/secure/pub/cmct               # secure site
+# DLLIST=https://ggsghpcc.sgt-inc.com/cmct/download/filelist.php
 
 ## Older versions of above for reference.  FTPURL is where individual
 ## download packages would appear on the Web, BUT Craig says it's a
@@ -34,7 +34,7 @@ DLLIST=https://ggsghpcc.sgt-inc.com/cmct/download/filelist.php
 # FTPURL=http://ggsghpcc.sgt-inc.com/pub/cmct    # original insecure site
 # DLLIST=https://ggsghpcc-dev.sgt-inc.com/cmct/download/filelist.php
 
-DAYS2GET=10           # approx number of days available to retrieve
+# DAYS2GET=10           # approx number of days available to retrieve
 
 ## BCCEMAIL will send a BCC: of the notification email to the specified
 ## addresses.  ADMINEMAIL are notified if anything goes wrong.
@@ -42,8 +42,8 @@ BCCEMAIL="erika.g.simon@nasa.gov"
 ADMINEMAIL="erika.g.simon@nasa.gov"
 
 ## Various programs we use
-JQ=/opt/csw/bin/jq      # cmd-line JSON parser
-TAR=/opt/csw/bin/tar               # gnu tar
+JQ=/efs/CmCt/JQ/jq   # cmd-line JSON parser
+TAR=/usr/bin/tar     # gnu tar
 GZIP=/usr/bin/gzip
 
 ## CMCT configuration files

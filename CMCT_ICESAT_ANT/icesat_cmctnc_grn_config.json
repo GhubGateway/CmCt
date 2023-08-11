@@ -19,7 +19,7 @@
 	{
             "2003" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2003/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2003/",
                 "fileList" :
 		[
 		    "GLA12_634_2103_001_1093_0_01_0001.CMCT.final.nc",
@@ -76,7 +76,7 @@
 
             "2004" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2004/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2004/",
                 "fileList" :
 		[
 		    "GLA12_634_2107_001_1289_0_01_0001.CMCT.final.nc",
@@ -194,7 +194,7 @@
          
             "2005" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2005/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2005/",
                 "fileList" :
 		[
 		    "GLA12_634_2111_001_1247_0_01_0001.CMCT.final.nc",
@@ -311,7 +311,7 @@
 
             "2006" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2006/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2006/",
                 "fileList" :
 		[
 		    "GLA12_634_2115_001_1289_0_01_0001.CMCT.final.nc",
@@ -424,7 +424,7 @@
  
             "2007" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2007/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2007/",
                 "fileList" :
 		[
 		    "GLA12_634_2119_001_1275_0_01_0001.CMCT.final.nc",
@@ -504,7 +504,7 @@
 
             "2008" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2008/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2008/",
                 "fileList" :
 		[
 		    "GLA12_634_2123_001_1289_0_01_0001.CMCT.final.nc",
@@ -586,7 +586,7 @@
 
             "2009" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2009/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Greenland/netcdf_5000/2009/",
                 "fileList" :
 		[
 		    "GLA12_634_2129_001_1289_0_01_0001.CMCT.final.nc",

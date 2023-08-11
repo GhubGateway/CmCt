@@ -19,7 +19,7 @@
 	{
             "2003" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2003_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2003_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2103_001_1093_0_01_0001_cmct_glas_antarctica.final.nc",
@@ -76,7 +76,7 @@
 
             "2004" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2004_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2004_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2107_001_1275_0_01_0001_cmct_glas_antarctica.final.nc",
@@ -197,7 +197,7 @@
          
             "2005" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2005_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2005_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2111_001_1247_0_01_0001_cmct_glas_antarctica.final.nc",
@@ -316,7 +316,7 @@
 
             "2006" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2006_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2006_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2115_001_1275_0_01_0001_cmct_glas_antarctica.final.nc",
@@ -398,7 +398,7 @@
  
             "2007" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2007_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2007_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2119_001_1275_0_01_0001_cmct_glas_antarctica.final.nc",
@@ -479,7 +479,7 @@
 
             "2008" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2008_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2008_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2123_001_1275_0_01_0001_cmct_glas_antarctica.final.nc",
@@ -566,7 +566,7 @@
 
             "2009" :
 	    {
-                "directory" : "/home/cmct/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2009_A/",
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/CMCT/R634_Antarctica/netcdf_5000/2009_A/",
                 "fileList" :
 		[
 		    "GLA12_634_2129_001_1275_0_01_0001_cmct_glas_antarctica.final.nc",
