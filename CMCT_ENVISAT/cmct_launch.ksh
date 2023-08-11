@@ -46,45 +46,47 @@ CMCTBIN=$(dirname ${0})
 
 RUNCFG=${1}
 
-## Function traperror handles any errors that occur, so the script doesn't
-## just try to continue.  Sends email to $ADMINEMAIL and if possible to the
-## user, then exits with status 1.
-traperror()
-{
-    status=$?
-    echo "Error trap taken, status=${status}.  Sending emails."
+# ## Function traperror handles any errors that occur, so the script doesn't
+# ## just try to continue.  Sends email to $ADMINEMAIL and if possible to the
+# ## user, then exits with status 1.
+# traperror()
+# {
+#     status=$?
+#     echo "Error trap taken, status=${status}.  Sending emails."
 
-    mailx -v -s "CMCT Error occurred in cmct_launch.ksh" -r cmct@sgt-inc.com ${ADMINEMAIL} <<EOF
-An error has occurred running cmct_launch.ksh on ggsghpcc.sgt-inc.com.
+#     mailx -v -s "CMCT Error occurred in cmct_launch.ksh" -r cmct@sgt-inc.com ${ADMINEMAIL} <<EOF
+# An error has occurred running cmct_launch.ksh on ggsghpcc.sgt-inc.com.
 
-Run config file = ${RUNCFG}
-Status = ${status}
+# Run config file = ${RUNCFG}
+# Status = ${status}
 
-Please check the launch log.
-EOF
+# Please check the launch log.
+# EOF
 
-    if [[ -n ${USEREMAIL} ]]
-    then
-	# This should probably include contact information
-	mailx -v -s "CMCT error runid=${RUNID}" -r cmct@sgt-inc.com ${USEREMAIL} <<EOF
-${REALNAME}:
+#     if [[ -n ${USEREMAIL} ]]
+#     then
+# 	# This should probably include contact information
+# 	mailx -v -s "CMCT error runid=${RUNID}" -r cmct@sgt-inc.com ${USEREMAIL} <<EOF
+# ${REALNAME}:
 
-    We're sorry, an error occurred during processing of your CMCT job, runid = ${RUNID}.  We've notified the CMCT staff to take a look.
+#     We're sorry, an error occurred during processing of your CMCT job, runid = ${RUNID}.  We've notified the CMCT staff to take a look.
 
-    This is an automated email.  Please don't reply to it directly.
-EOF
-    fi
+#     This is an automated email.  Please don't reply to it directly.
+# EOF
+#     fi
 
-    exit 1
-}
+#     exit 1
+# }
 
 ##
 ## Main part of the script
 ##
 
-trap 'traperror' ERR
+# trap 'traperror' ERR
 
 RUNCFG_BASE=$(basename ${RUNCFG})
+# Source the spack environment to pick up installed libraries
+. /efs/CmCt/spack/share/spack/setup-env.sh
 
 ##
 ## Parse what we need from the run config file
@@ -171,70 +173,73 @@ TGZFILE=${TARFILE}.gz             # assumes std gzip name convention
 
 rm -rf ${OUTDIR}/${STAGEDIR}
 
-##
-## Copy it to the "ftp" area for user retrieval (even though it's really
-## done by html not ftp, but Craig the sysadmin still calls it that).
-##
-USERFTP=${FTPLOCAL}/${LOGINNAME}
+# For the installation on the SMCE JupyterHub for the Earth Information System,
+# we have commented out the email code below.
 
-# Check that user's directory exists, if not (probably a new user) create it.
-if [[ ! -d ${USERFTP} ]]
-then
-    mkdir ${USERFTP}
-fi
-chmod g+rw ${USERFTP}          # Let group cmct have access (for now anyway)
+# ##
+# ## Copy it to the "ftp" area for user retrieval (even though it's really
+# ## done by html not ftp, but Craig the sysadmin still calls it that).
+# ##
+# USERFTP=${FTPLOCAL}/${LOGINNAME}
 
-# Security code from Craig.  Requires user to log in, and doesn't let them
-# see anyone else's files.
-if [ ! -f $USERFTP/.htaccess ]
-then
-   echo "
-AuthType Basic
-AuthName \"Files for $LOGINNAME\"
-AuthBasicProvider dbd
+# # Check that user's directory exists, if not (probably a new user) create it.
+# if [[ ! -d ${USERFTP} ]]
+# then
+#     mkdir ${USERFTP}
+# fi
+# chmod g+rw ${USERFTP}          # Let group cmct have access (for now anyway)
 
-require user $LOGINNAME" > $USERFTP/.htaccess
-fi
+# # Security code from Craig.  Requires user to log in, and doesn't let them
+# # see anyone else's files.
+# if [ ! -f $USERFTP/.htaccess ]
+# then
+#    echo "
+# AuthType Basic
+# AuthName \"Files for $LOGINNAME\"
+# AuthBasicProvider dbd
 
-cp -p ${TGZFILE} ${USERFTP}
+# require user $LOGINNAME" > $USERFTP/.htaccess
+# fi
 
-# $URL is the direct link to the results file.
-# I guess its vestigal now.  Used to include it in the email, but Craig
-# says it's vulnerable to SQL injection attacks.
-# URL=${FTPURL}/${LOGINNAME}/$(basename ${TGZFILE})
+# cp -p ${TGZFILE} ${USERFTP}
 
-##
-## Email the user that the files are ready
-##
-## $BCCEMAIL must be in quotes here, else multiple BCC addresses may be
-## treated as regular ones.  Seems to be OK if it's blank.
-mailx -v -s "Your CMCT results are ready: ${RUNID}" -r cmct@sgt-inc.com -b "${BCCEMAIL}" ${USEREMAIL} <<EOF
-${REALNAME}:
+# # $URL is the direct link to the results file.
+# # I guess its vestigal now.  Used to include it in the email, but Craig
+# # says it's vulnerable to SQL injection attacks.
+# # URL=${FTPURL}/${LOGINNAME}/$(basename ${TGZFILE})
 
-   Thank you for using the ISMIP6/NASA GSFC Cryosphere Model Comparison Tool.
+# ##
+# ## Email the user that the files are ready
+# ##
+# ## $BCCEMAIL must be in quotes here, else multiple BCC addresses may be
+# ## treated as regular ones.  Seems to be OK if it's blank.
+# mailx -v -s "Your CMCT results are ready: ${RUNID}" -r cmct@sgt-inc.com -b "${BCCEMAIL}" ${USEREMAIL} <<EOF
+# ${REALNAME}:
 
-   The results of your recent run are ready!  For at least the next ${DAYS2GET} days, you can retrieve them from your personal download directory at this URL:
+#    Thank you for using the ISMIP6/NASA GSFC Cryosphere Model Comparison Tool.
 
-${DLLIST}
+#    The results of your recent run are ready!  For at least the next ${DAYS2GET} days, you can retrieve them from your personal download directory at this URL:
 
-   You will need to log in with the userid and password you use on the CMCT submission site.
+# ${DLLIST}
 
-   Run title:  ${RUNTITLE}
-   Run's unique runid:  ${RUNID}
-   File name of run results package:  $(basename ${TGZFILE})
+#    You will need to log in with the userid and password you use on the CMCT submission site.
 
-   If you have any problems or questions or comments, please contact:
+#    Run title:  ${RUNTITLE}
+#    Run's unique runid:  ${RUNID}
+#    File name of run results package:  $(basename ${TGZFILE})
 
-cmct@sgt-inc.com                              (general contact address)
-Sophie Nowicki <sophie.nowicki@nasa.gov>      (project leader)
-Erika Simon <erika.g.simon@nasa.gov>          (software and comparison help)
-Lori Tyahla <LTyahla@sgt-inc.com>             (web site help only)
+#    If you have any problems or questions or comments, please contact:
 
-   This is an automated email.  Please don't reply to it directly.
-EOF
+# cmct@sgt-inc.com                              (general contact address)
+# Sophie Nowicki <sophie.nowicki@nasa.gov>      (project leader)
+# Erika Simon <erika.g.simon@nasa.gov>          (software and comparison help)
+# Lori Tyahla <LTyahla@sgt-inc.com>             (web site help only)
 
-echo "Email notification sent to ${USEREMAIL} for runid ${RUNID}"
-echo
-times
+#    This is an automated email.  Please don't reply to it directly.
+# EOF
+
+# echo "Email notification sent to ${USEREMAIL} for runid ${RUNID}"
+# echo
+# times
 
 exit 0

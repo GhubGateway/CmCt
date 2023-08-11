@@ -16,7 +16,7 @@
 	{
             "2002" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2002/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2002/",
                 "fileList" :
 		[
 		    "9020701GC.ID05.nc",
@@ -44,7 +44,7 @@
         
             "2003" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2003/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2003/",
                 "fileList" :
 		[
 		    "9030101GC.ID05.nc",
@@ -100,7 +100,7 @@
          
             "2004" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2004/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2004/",
                 "fileList" :
 		[
 		    "9040101GC.ID05.nc",
@@ -156,7 +156,7 @@
 
             "2005" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2005/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2005/",
                 "fileList" :
 		[
 		    "9050101GC.ID05.nc",
@@ -212,7 +212,7 @@
  
             "2006" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2006/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2006/",
                 "fileList" :
 		[
 		    "9060101GC.ID05.nc",
@@ -268,7 +268,7 @@
 
 	        "2007" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2007/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2007/",
                 "fileList" :
 		[
 		    "9070101GC.ID05.nc",
@@ -324,7 +324,7 @@
 
 	        "2008" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2008/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2008/",
                 "fileList" :
 		[
 		    "9080101GC.ID05.nc",
@@ -380,7 +380,7 @@
 
             "2009" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2009/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2009/",
                 "fileList" :
 		[
 		    "9090101GC.ID05.nc",
@@ -436,7 +436,7 @@
         
             "2010" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2010/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2010/",
                 "fileList" :
 		[
 		    "9100101GC.ID05.nc",
@@ -492,7 +492,7 @@
         
             "2011" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2011/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2011/",
                 "fileList" :
 		[
 		    "9110101GC.ID05.nc",
@@ -548,7 +548,7 @@
 	    
             "2012" :
 	    {
-                "directory" : "/home/cmct/datasets/ENVISAT_Data/2012/",
+                "directory" : "/efs/CmCt/datasets/ENVISAT_Data/2012/",
                 "fileList" :
 		[
 		    "9120101GC.ID05.nc",
