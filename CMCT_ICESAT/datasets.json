@@ -1,0 +1,21 @@
+{
+    "COMMENTS" : [
+	"Description of datasets available for CMCT comparisons",
+	"DF 2024-01-03"
+    ],
+
+
+
+    "known_datasets" : [
+	"icesat-cmctnc-tpelev-grn"
+    ],
+
+
+    "COMMENT" : "Below here, a section for each dataset in known_datasets",
+
+    "icesat-cmctnc-tpelev-grn" : {
+	"desc" : "ICESat elevations, T/P ellipsoid, Greenland, CMCT netCDF",
+	"configfile" : "/efs/CmCt/CMCT_ICESAT/icesat_cmctnc_tpelev_grn_config.json"
+    }
+
+}

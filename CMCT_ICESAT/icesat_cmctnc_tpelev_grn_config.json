@@ -1,0 +1,71 @@
+{
+    "icesat_cmctnc_config" :
+    {
+        "COMMENT" :
+	[
+	    "Corrected ICESat dataset for Greenland.",
+	    ""
+	],
+
+        "campaigns" :
+	{
+            "2003" :
+	    {
+                "directory" : "/efs/CmCt/datasets/GLAS_Data/2003/",
+                "fileList" :
+		[
+			"GLAH12_634_2103_001_1093_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1107_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1121_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1135_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1149_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1163_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1177_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1191_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1205_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1219_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1233_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1247_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1261_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1275_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1289_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1303_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1317_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1331_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_001_1345_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0001_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0015_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0029_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0043_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0057_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0071_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0085_0_01_0001.CMCT.final.nc",
+	    "GLAH12_634_2103_002_0099_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0113_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0127_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0141_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0155_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0169_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0183_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0197_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0211_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0225_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0239_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0253_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0267_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0281_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0295_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0309_0_01_0001.CMCT.final.nc",   
+            "GLAH12_634_2103_002_0323_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0337_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0351_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0365_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0379_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0393_0_01_0001.CMCT.final.nc",
+            "GLAH12_634_2103_002_0407_0_01_0001.CMCT.final.nc"
+
+		]
+            }
+	}
+    }
+}
