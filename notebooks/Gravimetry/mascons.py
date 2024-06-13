@@ -71,7 +71,28 @@ def load_gsfc_solution(h5_filename, lon_wrap='pm180'):
         mascons = GSFCmascons(f, lon_wrap)
     return mascons
 
-def points_to_mascons(mascons, lats, lons, values):
+def points_to_mascons(mascons, I_, lats, lons, values):
+    """
+    For each mascon i such that I_[i] == true, this function will set mscn_mean[j] to be the 
+    average of all values[z] such that lats[z] and lons[z] is contained within the bounds of 
+    mascon[i] as defined by mascons.lat_center[i], mascons.lon_center[i], mascons.lat_span[i], and
+    mascons.lon_span[i]. 
+    Note that j does not have to be equal to i, and in fact it often is not. mscn_mean[0] will 
+    correspond to the first entry of I_ which is true, mscn_mean[1] will correspond to the second 
+    entry of I_ which is true, and so on.
+    
+    INPUTS:
+    mascons: A mascons object
+    I_ : A boolean array with shape (mascons.N_mascons,)
+    lats, lons, values: All three are 1D arrays which must all have the same length. value[z] 
+    corresponds to the point at lats[z], lons[z]. The function np.nanmean must be able to 
+    operate on the entries of the values array
+
+    OUTPUTS:
+    mscn_mean: A 1D array of length np.sum(I_) and whose entries are the same datatype as the 
+    entries of the values array
+    """
+    N_GIS_mascons = np.sum(I_)   # number of mascons that are on the greenland ice sheet
     d2r = np.pi/180
     
     min_lats = mascons.lat_centers - mascons.lat_spans/2
@@ -79,9 +100,12 @@ def points_to_mascons(mascons, lats, lons, values):
     min_lons = mascons.lon_centers - mascons.lon_spans/2
     max_lons = mascons.lon_centers + mascons.lon_spans/2
     
-    mscn_mean = np.nan * np.ones(mascons.N_mascons)
-    for i in range(mascons.N_mascons):
-        
+    mscn_mean = np.nan * np.ones(N_GIS_mascons)
+
+    indices = np.array(range(mascons.N_mascons))[I_]
+    j = 0
+    for i in indices:
+    
         if np.min(lats) > max_lats[i]:
             continue
         if np.max(lats) < min_lats[i]:
@@ -91,9 +115,19 @@ def points_to_mascons(mascons, lats, lons, values):
         if np.max(lons) < min_lons[i]:
             continue
         
-        I_ = (lats >= min_lats[i]) & (lats < max_lats[i]) & (lons >= min_lons[i]) & (lons < max_lons[i])
-        m = values[I_]
-        m_lats = lats[I_]
+        K_ = (lats >= min_lats[i]) & (lats < max_lats[i]) & (lons >= min_lons[i]) & (lons < max_lons[i])
+        m = values[K_]
+        m_lats = lats[K_]
+
+        """ # TEMPORARY: USED FOR TESTING
+        if j == 1:
+            print("i: " + str(i))
+            print("Mascon lat center: " + str(mascons.lat_centers[i]))
+            print("Mascon lon center: " + str(mascons.lon_centers[i]))
+            print("Mascon lat span: " + str(mascons.lat_spans[i]))
+            print("Mascon lon span: " + str(mascons.lon_spans[i]))
+            print("z's: " + str(np.array(range(len(lats)))[K_]))
+        """
         
         m_lats = m_lats[~np.isnan(m)]
         m = m[~np.isnan(m)]
@@ -104,8 +138,8 @@ def points_to_mascons(mascons, lats, lons, values):
             continue
 
         cos_weight = np.cos(m_lats*d2r)
-        mscn_mean[i] = np.nanmean(m) # * cos_weight) / (np.sum(cos_weight) * len(m))
-    
+        mscn_mean[j] = np.nanmean(m) # * cos_weight) / (np.sum(cos_weight) * len(m))
+        j = j + 1
     return mscn_mean
 
 def calc_mascon_delta_cmwe(mascons, start_date, end_date):

@@ -8,6 +8,11 @@
 datasets/
 externalpackages/
 
+notebooks/Gravimetry/mascon_files/
+notebooks/Gravimetry/model_files/
+notebooks/Gravimetry/output_files/
+notebooks/Gravimetry/unit_testing/
+
 # Python .gitignore from https://github.com/github/gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
