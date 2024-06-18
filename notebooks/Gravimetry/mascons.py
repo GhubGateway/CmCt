@@ -1,6 +1,9 @@
 import numpy as np
 import xarray as xr
 import h5py
+from scipy.interpolate import interp1d
+import cftime
+import datetime
 
 class GSFCmascons:
     def __init__(self, f, lon_wrap='pm180'):
@@ -81,14 +84,14 @@ def points_to_mascons(mascons, I_, lats, lons, values):
     correspond to the first entry of I_ which is true, mscn_mean[1] will correspond to the second 
     entry of I_ which is true, and so on.
     
-    INPUTS:
+    Parameters:
     mascons: A mascons object
     I_ : A boolean array with shape (mascons.N_mascons,)
     lats, lons, values: All three are 1D arrays which must all have the same length. value[z] 
     corresponds to the point at lats[z], lons[z]. The function np.nanmean must be able to 
     operate on the entries of the values array
 
-    OUTPUTS:
+    Returns:
     mscn_mean: A 1D array of length np.sum(I_) and whose entries are the same datatype as the 
     entries of the values array
     """
@@ -118,16 +121,6 @@ def points_to_mascons(mascons, I_, lats, lons, values):
         K_ = (lats >= min_lats[i]) & (lats < max_lats[i]) & (lons >= min_lons[i]) & (lons < max_lons[i])
         m = values[K_]
         m_lats = lats[K_]
-
-        """ # TEMPORARY: USED FOR TESTING
-        if j == 1:
-            print("i: " + str(i))
-            print("Mascon lat center: " + str(mascons.lat_centers[i]))
-            print("Mascon lon center: " + str(mascons.lon_centers[i]))
-            print("Mascon lat span: " + str(mascons.lat_spans[i]))
-            print("Mascon lon span: " + str(mascons.lon_spans[i]))
-            print("z's: " + str(np.array(range(len(lats)))[K_]))
-        """
         
         m_lats = m_lats[~np.isnan(m)]
         m = m[~np.isnan(m)]
@@ -139,14 +132,55 @@ def points_to_mascons(mascons, I_, lats, lons, values):
 
         cos_weight = np.cos(m_lats*d2r)
         mscn_mean[j] = np.nanmean(m) # * cos_weight) / (np.sum(cos_weight) * len(m))
+        
         j = j + 1
     return mscn_mean
 
-def calc_mascon_delta_cmwe(mascons, start_date, end_date):
-    t_0 = np.datetime64(start_date)
-    t_1 = np.datetime64(end_date)
+def YYYY_MM_DD_to_days_since_Jan_0_2002(date_str):
+    date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+    return cftime.date2num(date_obj, "days since 2001-12-31")
+
+def calc_mascon_delta_cmwe(mascon, start_date, end_date, I_):
+    """
+    Given a mascons object, strings indicating start and end dates, and a boolean array, this function
+    returns the change in the cmwe variable for the mascons object between the start and end dates.
+    Only rows i of the cmwe array for which I_[i] is True will be considered, and the output array will
+    have shape (np.sum(I_),). The function will interpolate the cmwe at start_date or end_date if either 
+    start_date or end_date respectively do not fall on one of the entries in mascon.days_middle.
+
+    Parameters:
+    mascon: A mascons object
+    start_date: A string of the form "YYYY-MM-DD". An error will be printed and the function will return 
+    None if start_date occurs before mascon.days_start[0]
+    end_date: A string of the form "YYYY-MM-DD". An error will be printed and the function will return 
+    None if end_date occurs after mascon.days_end[-1]
+    I_: A 1D boolean array with the same size as the first axis of mascon.cmwe
+
+    Returns:
+    A 1D array with shape (np.sum(I_)). This represents (for the rows of mascon.cmwe indicated by I_, 
+    and in the same relative order as they appear in mascon.cmwe) the change in mascon.cmwe between 
+    start_date and end_date, estimated with linear interpolation.
+    """
     
-    i_0 = np.abs(mascons.times_start - t_0).argmin()
-    i_1 = np.abs(mascons.times_end - t_1).argmin()
+    t_0 = YYYY_MM_DD_to_days_since_Jan_0_2002(start_date)
+    t_1 = YYYY_MM_DD_to_days_since_Jan_0_2002(end_date)
+
+    if t_0 < mascon.days_start[0]:
+        print(f"Error: Inputted start_date ({start_date}) is before the earliest date in GRACE MASCONS data ({mascon.times_start[0]})")
+        return None
+    elif t_1 > mascon.days_end[-1]:
+        print(f"Error: Inputted end_date ({end_date}) is after the latest date in GRACE MASCONS data ({mascon.times_end[-1]})")
+        return None
+
+    cmwe_I_ = mascon.cmwe[I_]   # Only include those mascons indicated in I_
     
-    return mascons.cmwe[:,i_1] - mascons.cmwe[:,i_0]
+    # Create an interpolation object to estimate the ice thickness on the start date and end date
+    interp_obj = interp1d(mascon.days_middle, cmwe_I_, axis = 1, assume_sorted = True, bounds_error = False, fill_value = "extrapolate")
+    
+    # Note that the only case in which interp1d will need to extrapolate is when days_start[0] <= t_0 < days_middle[0] or 
+    # days_middle[-1] < t_1 < days_end[-1], in which case the extrapolation should not introduce too much error
+    start_cmwe = interp_obj(t_0)
+    end_cmwe = interp_obj(t_1)
+    return np.array(end_cmwe - start_cmwe)
+
+    
