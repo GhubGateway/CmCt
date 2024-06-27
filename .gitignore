@@ -12,6 +12,10 @@ notebooks/Gravimetry/mascon_files/
 notebooks/Gravimetry/model_files/
 notebooks/Gravimetry/output_files/
 notebooks/Gravimetry/unit_testing/
+notebooks/DynamicThickness/model_files/
+notebooks/DynamicThickness/observation_data/
+notebooks/DynamicThickness/unit_testing/
+notebooks/DynamicThickness/output_files/
 
 # Python .gitignore from https://github.com/github/gitignore
 # Byte-compiled / optimized / DLL files
