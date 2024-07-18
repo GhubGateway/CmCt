@@ -3,6 +3,7 @@ import pyproj
 import cartopy.crs as ccrs
 import time
 import warnings
+import concurrent.futures
 
 
 def flatten_to_list_of_points(x, y):
@@ -38,6 +39,8 @@ def grid_centers_from_extent_and_res(extent, grid_size):
     
 
 def regrid_data(x_centers, y_centers, x, y, data):
+    global x_span
+    global y_span
     x_span, y_span = x_centers[1] - x_centers[0], y_centers[1] - y_centers[0]
     
     """
@@ -53,32 +56,66 @@ def regrid_data(x_centers, y_centers, x, y, data):
     documentation, let data have a length of n and let each entry of data have a length m
 
     Returns:
-    arrs: arrs is a list (of length n) of arrays each with shape (len(y_centers), len(x_centers))
-    arrs[w][i, j] is the average of all points in data[w] that are contained within the grid 
-    cell specified by x_centers[j], y_centers[i]. In other words, arr[i, j] is the average of 
+    output: output is a list (of length n) of arrays each with shape (len(y_centers), len(x_centers))
+    output[w][i, j] is the average of all points in data[w] that are contained within the grid 
+    cell specified by x_centers[j], y_centers[i]. In other words, output[i, j] is the average of 
     data[w][k] for all k such that x_centers[j] - x_span/2 =< x[k] < x_centers[j] + x_span/2 and 
     y_centers[i] - y_span/2 =< y[k] < y_centers[i] + y_span/2. In the case that there are no datapoints
-    that fit these conditions, arrs[w][i,j] will be NaN
+    that fit these conditions, output[w][i,j] will be NaN
     """
-    n = len(data)
-    arrs = []
-    for i in range(n):
-        arrs.append(np.empty((len(y_centers), len(x_centers)), dtype = "float") * np.nan)
 
+    # Sort x, y, and all arrays in data in increasing order of x
     sorter = np.argsort(x)   # Gives indices that would sort x
+    x = x[sorter]
+    y = y[sorter]
+    data = [v[sorter] for v in data]
 
+    # Declare global variables so that they can be accessed by helper_regrid_data
+    global n
+    n = len(data)
+    global x_centers_
+    global y_centers_
+    global x_
+    global y_
+    global data_
+    x_centers_, y_centers_, x_, y_ = x_centers, y_centers, x, y
+    x_centers, y_centers, x, y = None, None, None, None   # Deallocate memory
+    data_ = np.stack(data, axis = 0)
+    data = None     # Deallocate memory
+
+    # Initialize output
+    arrs = np.empty((n, len(y_centers_), len(x_centers_)), dtype = "float") * np.nan
+
+    # Run in parallel
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
+        inputs = [tup for tup in enumerate(x_centers_)]
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            results = executor.map(helper_regrid_data_over_y, inputs)
+            for result in results:
+                i, col = result
+                arrs[:, :, i] = col
 
-        for i, x_c in enumerate(x_centers):
-            # Find indices that have x values in the right range
-            left = np.searchsorted(x, [x_c - x_span/2], side = "left", sorter = sorter)
-            right = np.searchsorted(x, [x_c + x_span/2], side = "right", sorter = sorter)
-            left, right = left[0], right[0]
-            
-            for j, y_c in enumerate(y_centers):
-                # Search all points for which x is in range
-                K_ = (y[left:right] >= y_c - y_span/2) & (y[left:right] < y_c + y_span/2)
-                for w in range(n):
-                    (arrs[w])[j, i] = np.nanmean(((data[w])[left:right])[K_])
-    return arrs
+    output = []
+    for w in range(n):
+        output.append(arrs[w, :, :])
+        
+    x_span, y_span, n, x_centers_, y_centers_, x_, y_, data_ = None, None, None, None, None, None, None, None
+    return output
+
+def helper_regrid_data_over_y(tup):
+    i, x_c = tup
+
+    # Find indices that have x values in the right range
+    left = np.searchsorted(x_, [x_c - x_span/2], side = "left")
+    right = np.searchsorted(x_, [x_c + x_span/2], side = "right")
+    left, right = left[0], right[0]
+
+    col = np.empty((n, len(y_centers_)), dtype = "float") * np.nan
+    for j, y_c in enumerate(y_centers_):
+        # Search all points for which x is in range
+        K_ = (y_[left:right] >= y_c - y_span/2) & (y_[left:right] < y_c + y_span/2)
+        
+        # Maybe speed this up by converting data to a numpy array so that this can be vectorized
+        col[:, j] = np.nanmean((data_[:, left:right])[:, K_], axis = 1)
+    return i, col
