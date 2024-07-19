@@ -84,7 +84,6 @@ def regrid_data(x_centers, y_centers, x, y, data):
     data = None     # Deallocate memory
 
     # Initialize output
-<<<<<<< Updated upstream
     arrs = np.empty((n, len(y_centers_), len(x_centers_)), dtype = "float") * np.nan
 
     # Run in parallel
@@ -106,50 +105,15 @@ def regrid_data(x_centers, y_centers, x, y, data):
 
 def helper_regrid_data_over_y(tup):
     i, x_c = tup
-=======
-    arrs = []
-    for i in range(n):
-        arrs.append(np.empty((len(y_centers_), len(x_centers_)), dtype = "float") * np.nan)
-    
-    # Maybe delete and see if that helps
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=RuntimeWarning)
-        """
-        inputs = [(i, x_c, arrs) for i, x_c in enumerate(x_centers_)]
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            results = executor.map(helper_regrid_data_over_y, inputs)
-            for result in results:
-                pass
-        """
-        for i, x_c in enumerate(x_centers_):
-            helper_regrid_data_over_y((i, x_c, arrs))
-    x_span, y_span, n, x_centers_, y_centers_, x_, y_, data_ = None, None, None, None, None, None, None, None
-    return arrs
-
-def helper_regrid_data_over_y(tup):
-    i, x_c, arrs = tup
->>>>>>> Stashed changes
 
     # Find indices that have x values in the right range
     left = np.searchsorted(x_, [x_c - x_span/2], side = "left")
     right = np.searchsorted(x_, [x_c + x_span/2], side = "right")
     left, right = left[0], right[0]
-<<<<<<< Updated upstream
 
     col = np.empty((n, len(y_centers_)), dtype = "float") * np.nan
-=======
-            
->>>>>>> Stashed changes
     for j, y_c in enumerate(y_centers_):
         # Search all points for which x is in range
         K_ = (y_[left:right] >= y_c - y_span/2) & (y_[left:right] < y_c + y_span/2)
-        
-        # Maybe speed this up by converting data to a numpy array so that this can be vectorized
-<<<<<<< Updated upstream
         col[:, j] = np.nanmean((data_[:, left:right])[:, K_], axis = 1)
     return i, col
-=======
-        data_col_j = np.nanmean((data_[left:right])[K_], axis = 1)
-        for w in range(n):
-            (arrs[w])[j, i] = np.nanmean(((data_[w])[left:right])[K_])  
->>>>>>> Stashed changes
