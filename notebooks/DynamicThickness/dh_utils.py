@@ -4,79 +4,6 @@ import concurrent.futures
 import netCDF4
 
 ######################### INTERPRETTING INPUTS #########################
-
-def check_input_validity(save_nc, output_fns, single_file_nc, n_comp, model_fn_ids, n_mod_fns,
-                         plot, save_plot, plot_fn, regrid, extent, grid_size):
-    if regrid:
-        if (extent is None) or (grid_size is None):
-            print("If the regrid input variable is true, the extent and grid_size variables must be supplied")
-            return True
-            
-        if np.size(extent) != 4:
-            print("extent must have 4 entries (left, right, top, bottom) in units of meters in polar stereographic")
-            return True
-    
-    if save_nc:
-        # Check that all output filenames are unique
-        if len(np.unique(output_fns)) < len(output_fns):
-            print("Error: At least two paths in output_fns are identical")
-            return True
-    
-        # Check that there are enough filenames
-        if single_file_nc:
-            if len(output_fns) < 1:
-                print(f"Error: No filename for saving the output netCDF file was provided, see the output_fns input")
-                return True
-        else:
-            if (len(output_fns) != n_comp):
-                print(f"Error: {n_comp} comparisons requested but {len(output_fns)} output filenames provided")
-                return True
-    
-        # Check that model_fn_ids is either None or has the same length as model_fns
-        if model_fn_ids is not None:
-            if (len(model_fn_ids) != n_mod_fns):
-                print(f"Error: model_fn_ids is not None but does not have the same length as model_fns")
-                return True
-    
-            if len(np.unique(model_fn_ids)) < len(model_fn_ids):
-                print("Error: At least two ids in model_fn_ids are identical")
-                return True
-    
-    if np.sum(plot):
-        if len(plot) != n_comp:
-            print(f"Error: Input variable plot has length {len(plot)}, but {n_comp} comparisons requested")
-            return True
-        
-        if len(save_plot) != len(plot):
-            print(f"Error: Input variable plot has length {len(plot)}, but input variable save_plot has length {len(plot)}. Should be the same length")
-            return True
-        
-        if np.sum(save_plot):
-            # Check that all plotting filenames that will be used are unique
-            if len(np.unique(plot_fn)) < len(plot_fn):
-                print("Error: At least two paths in plot_fn are identical")
-                return True
-    return False   # Passed all tests
-
-
-def time_within_bounds(year, time_arr, string_1, string_2):
-    """
-    Check if a year is inside of bounds of an string array of years, printing appropriate errors if not
-    """
-    try:
-        year_dt = datetime.strptime(str(year), "%Y")
-    except:
-        print(f"Error: {string_1} ({year}) could not be read in the form 'YYYY'")
-        return False
-    if datetime.strptime(str(time_arr[0]), "%Y") > year_dt:
-        print(f"Error: {string_1} ({year}) occurs before first date of {string_2} ({time_arr[0]})")
-        return False
-    if datetime.strptime(str(time_arr[-1]), "%Y") < year_dt:
-        print(f"Error: {string_1} ({year}) occurs after last date of {string_2} ({time_arr[-1]})")
-        return False
-    return True
-
-
 def manage_comparisons(desired_comparisons, obs = True):
     """
     Outputs comp_info, whose purpose is to reduce the information in desired_comparisons to the minimum necessary as it relates
@@ -112,7 +39,6 @@ def manage_comparisons(desired_comparisons, obs = True):
 
 
 ######################### SAVING OUTPUTS #########################
-
 def save_residuals_to_netcdf(output_fns, all_dh_res, x_UTM, y_UTM, desired_comparisons, crs_wkt,
                             single_file_nc, model_fn_ids):
     """
@@ -217,5 +143,3 @@ def helper_save_all_residuals_to_one_netcdf(fn, all_dh_res, x_UTM, y_UTM, desire
     all_dh_res_var.grid_mapping = "spatial_ref"
 
     rootgrp.close()
-
-

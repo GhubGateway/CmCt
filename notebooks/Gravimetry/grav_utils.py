@@ -5,7 +5,6 @@ import xarray as xr
 from datetime import datetime
 
 ################# Interpretting Inputs ################# 
-
 def interpret_comparisons_obs(desired_comparisons):
     """
     Outputs comp_info and comp_2_obs_idx, whose purpose is to reduce the information in desired_comparisons 
@@ -49,25 +48,7 @@ def interpret_comparisons_mod(desired_comparisons):
         (comp_info[mod_idx]).setdefault(time_id, [])
         ((comp_info[mod_idx])[time_id]).append(i)
     return comp_info
-
-def time_within_bounds(time, date_string, string_1, string_2):
-    if datetime.strptime(date_string, "%Y-%m-%d") < cftime_to_datetime(time[0]):
-        print(f"Error: {string_1} ({start_date}) is before first date in {string_2} ({lithk.time.data[0]})")
-        return False
-
-    # Check that end date is not after data is collected
-    if datetime.strptime(date_string, "%Y-%m-%d") > cftime_to_datetime(time[-1]):
-        print(f"Error: {string_1} ({end_date}) is after last date in {string_2} ({lithk.time.data[-1]})")
-        return False
-    return True
-        
-
-def cftime_to_datetime(cf):
-    dt64 = np.datetime64(cf)
-    timestamp = ((dt64 - np.datetime64('1970-01-01T00:00:00'))
-                 / np.timedelta64(1, 's'))
-    return datetime.utcfromtimestamp(timestamp)
-
+    
 
 ################# Writing Outputs ################# 
 def write_to_netcdf(all_cmwe_res, single_file_nc, output_fns, desired_comparisons, model_ids, model_fns):
