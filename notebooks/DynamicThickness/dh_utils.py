@@ -49,7 +49,8 @@ def save_residuals_to_netcdf(output_fns, all_dh_res, x_UTM, y_UTM, desired_compa
     """
     
     if len(all_dh_res) == 1:
-        helper_save_one_residual_to_netcdf((output_fns[0], all_dh_res[0], (desired_comparisons[0])[2], (desired_comparisons[0])[3]))
+        helper_save_one_residual_to_netcdf((output_fns[0], all_dh_res[0], (desired_comparisons[0])[2], (desired_comparisons[0])[3],
+                                          crs_wkt, x_UTM, y_UTM))
     elif single_file_nc:
         helper_save_all_residuals_to_one_netcdf(output_fns[0], all_dh_res, x_UTM, y_UTM, desired_comparisons, 
                                                 crs_wkt, model_fn_ids)
@@ -73,11 +74,6 @@ def helper_save_one_residual_to_netcdf(tuple):
     
     rootgrp = netCDF4.Dataset(fn, "w", format="NETCDF4")
     
-    # Record coordinate system
-    spatial_ref_var = rootgrp.createVariable("spatial_ref", "i8")
-    spatial_ref_var[:] = 0
-    spatial_ref_var.crs_wkt = crs_wkt
-    
     # Set up x and y variables
     x_dim = rootgrp.createDimension("x", len(x_UTM))
     y_dim = rootgrp.createDimension("y", len(y_UTM))
@@ -89,20 +85,14 @@ def helper_save_one_residual_to_netcdf(tuple):
     # Set up dynamic thickness residual variable
     dh_res_var = rootgrp.createVariable("dh_res", "f4", ("y","x",))
     dh_res_var[:,:] = dh_res
-    dh_res_var.coordinates = "spatial_ref"
-    dh_res_var.grid_mapping = "spatial_ref"
     dh_res_var.long_name = ("Residual of annual dynamic mass/ice thickness (assume ice density of 917 kg/m3) change from Sep 1st " + str(start_year) + 
                             " to Aug 31st " + str(end_year))
     dh_res_var.units = "meters"
+    dh_res_var.crs_wkt = crs_wkt
     rootgrp.close()
 
 def helper_save_all_residuals_to_one_netcdf(fn, all_dh_res, x_UTM, y_UTM, desired_comparisons, crs_wkt, model_fn_ids):
     rootgrp = netCDF4.Dataset(fn, "w", format="NETCDF4")
-    
-    # Record coordinate system
-    spatial_ref_var = rootgrp.createVariable("spatial_ref", "i8")
-    spatial_ref_var[:] = 0
-    spatial_ref_var.crs_wkt = crs_wkt
     
     # Set up x and y variables
     x_dim = rootgrp.createDimension("x", len(x_UTM))
@@ -121,11 +111,11 @@ def helper_save_all_residuals_to_one_netcdf(fn, all_dh_res, x_UTM, y_UTM, desire
         end_ys.append(comp[3])
 
     # Set up comparison information dimension
-    comp_dim = rootgrp.createDimension("comparison", len(desired_comparisons))
-    obs_src_var = rootgrp.createVariable("obs_src", np.dtype('U4'), ("comparison",))
-    model_id_var = rootgrp.createVariable("model_id", np.dtype('U'), ("comparison",))
-    start_year_var = rootgrp.createVariable("start_year", 'i2', ("comparison",))
-    end_year_var = rootgrp.createVariable("end_year", 'i2', ("comparison",))
+    comp_dim = rootgrp.createDimension("n", len(desired_comparisons))
+    obs_src_var = rootgrp.createVariable("obs_src", np.dtype('U4'), ("n",))
+    model_id_var = rootgrp.createVariable("model_id", np.dtype('U'), ("n",))
+    start_year_var = rootgrp.createVariable("start_year", 'i2', ("n",))
+    end_year_var = rootgrp.createVariable("end_year", 'i2', ("n",))
     if model_fn_ids is None:
         model_fn_ids = model_fns
         
@@ -136,10 +126,9 @@ def helper_save_all_residuals_to_one_netcdf(fn, all_dh_res, x_UTM, y_UTM, desire
         end_year_var[j] = end_ys[j]
 
     # Fill in dynamic thickness information
-    all_dh_res_var = rootgrp.createVariable("all_dh_res", "f8", ("comparison","y", "x",))
+    all_dh_res_var = rootgrp.createVariable("all_dh_res", "f8", ("n","y", "x",))
     all_dh_res_var[:] = np.stack(all_dh_res, axis = 0)
     all_dh_res_var.units = "meters"
-    all_dh_res_var.coordinates = "spatial_ref"
-    all_dh_res_var.grid_mapping = "spatial_ref"
+    all_dh_res_var.crs_wkt = crs_wkt
 
     rootgrp.close()

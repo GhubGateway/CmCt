@@ -43,6 +43,8 @@ def check_input_validity(save_nc, output_fns, single_file_nc, n_comp, model_fn_i
             # Check that all plotting filenames that will be used are unique
             if len(np.unique(plot_fn)) < len(plot_fn):
                 return True, "Error: At least two paths in plot_fn are identical"
+    if not (save_nc or np.sum(plot)):
+        return True, f"Warning: You have chosen not to plot and not to save a netcdf file"
 
     if (loc is not None) & (loc != "GIS") & (loc != "AIS"):
         return True, f"Error: Input loc is equal to '{loc}'. Allowed values are 'AIS' or 'GIS'"
