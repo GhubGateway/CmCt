@@ -39,7 +39,7 @@ def manage_comparisons(desired_comparisons, obs = True):
 
 
 ######################### SAVING OUTPUTS #########################
-def save_residuals_to_netcdf(output_fns, all_dh_res, x_UTM, y_UTM, desired_comparisons, crs_wkt,
+def save_residuals_to_netcdf(output_fns, all_dh_res, x, y, desired_comparisons, crs_wkt,
                             single_file_nc, model_fn_ids):
     """
     If single_file_nc is false, this function acts as a wrapper function for helper_save_one_residual_to_netcdf 
@@ -50,15 +50,15 @@ def save_residuals_to_netcdf(output_fns, all_dh_res, x_UTM, y_UTM, desired_compa
     
     if len(all_dh_res) == 1:
         helper_save_one_residual_to_netcdf((output_fns[0], all_dh_res[0], (desired_comparisons[0])[2], (desired_comparisons[0])[3],
-                                          crs_wkt, x_UTM, y_UTM))
+                                          crs_wkt, x, y))
     elif single_file_nc:
-        helper_save_all_residuals_to_one_netcdf(output_fns[0], all_dh_res, x_UTM, y_UTM, desired_comparisons, 
+        helper_save_all_residuals_to_one_netcdf(output_fns[0], all_dh_res, x, y, desired_comparisons, 
                                                 crs_wkt, model_fn_ids)
     else:
         inputs = []
         for i in range(len(desired_comparisons)):
             inputs.append((output_fns[i], all_dh_res[i], (desired_comparisons[i])[2], (desired_comparisons[i])[3],
-                           crs_wkt, x_UTM, y_UTM))
+                           crs_wkt, x, y))
         
         with concurrent.futures.ProcessPoolExecutor() as executor:
             results = executor.map(helper_save_one_residual_to_netcdf, inputs)
@@ -70,17 +70,16 @@ def helper_save_one_residual_to_netcdf(tuple):
     """
     Saves the residual of a single comparison to a netcdf file
     """
-    fn, dh_res, start_year, end_year, crs_wkt, x_UTM, y_UTM = tuple
+    fn, dh_res, start_year, end_year, crs_wkt, x, y = tuple
     
     rootgrp = netCDF4.Dataset(fn, "w", format="NETCDF4")
     
     # Set up x and y variables
-    x_dim = rootgrp.createDimension("x", len(x_UTM))
-    y_dim = rootgrp.createDimension("y", len(y_UTM))
+    x_dim = rootgrp.createDimension("x", len(x))
+    y_dim = rootgrp.createDimension("y", len(y))
     x_var = rootgrp.createVariable("x", "f4", ("x",))
     y_var = rootgrp.createVariable("y", "f4", ("y",))
-    x_var[:], y_var[:] = x_UTM, y_UTM
-    x_var.units, y_var.units = "meter", "meter"
+    x_var[:], y_var[:] = x, y
     
     # Set up dynamic thickness residual variable
     dh_res_var = rootgrp.createVariable("dh_res", "f4", ("y","x",))
@@ -91,16 +90,18 @@ def helper_save_one_residual_to_netcdf(tuple):
     dh_res_var.crs_wkt = crs_wkt
     rootgrp.close()
 
-def helper_save_all_residuals_to_one_netcdf(fn, all_dh_res, x_UTM, y_UTM, desired_comparisons, crs_wkt, model_fn_ids):
+def helper_save_all_residuals_to_one_netcdf(fn, all_dh_res, x, y, desired_comparisons, crs_wkt, model_fn_ids):
+    """
+    Saves multiple residuals to a single netcdf file
+    """
     rootgrp = netCDF4.Dataset(fn, "w", format="NETCDF4")
     
     # Set up x and y variables
-    x_dim = rootgrp.createDimension("x", len(x_UTM))
-    y_dim = rootgrp.createDimension("y", len(y_UTM))
+    x_dim = rootgrp.createDimension("x", len(x))
+    y_dim = rootgrp.createDimension("y", len(y))
     x_var = rootgrp.createVariable("x", "f4", ("x",))
     y_var = rootgrp.createVariable("y", "f4", ("y",))
-    x_var[:], y_var[:] = x_UTM, y_UTM
-    x_var.units, y_var.units = "meter", "meter"
+    x_var[:], y_var[:] = x, y
 
     # Read in desired comparisons as four lists, not a list of 4-tuples
     srcs, id_idxs, str_ys, end_ys = [], [], [], []

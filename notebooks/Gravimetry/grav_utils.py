@@ -89,19 +89,19 @@ def write_all_residuals_to_one_netcdf(all_cmwe_res, output_fns, desired_comparis
         end_ys.append(comp[2])
 
     # Set up comparison information dimension
-    comp_dim = rootgrp.createDimension("comparison", len(desired_comparisons))
-    model_id_var = rootgrp.createVariable("model_id", np.dtype('U'), ("comparison",))
-    start_year_var = rootgrp.createVariable("start_year", np.dtype('U'), ("comparison",))
-    end_year_var = rootgrp.createVariable("end_year", np.dtype('U'), ("comparison",))
+    comp_dim = rootgrp.createDimension("n", len(desired_comparisons))
+    model_id_var = rootgrp.createVariable("model_id", np.dtype('U'), ("n",))
+    start_date_var = rootgrp.createVariable("start_date", np.dtype('U'), ("n",))
+    end_date_var = rootgrp.createVariable("end_date", np.dtype('U'), ("n",))
         
     for j in range(len(desired_comparisons)):
         model_id_var[j] = model_ids[id_idxs[j]]
-        start_year_var[j] = str_ys[j]
-        end_year_var[j] = end_ys[j]
+        start_date_var[j] = str_ys[j]
+        end_date_var[j] = end_ys[j]
 
     # Fill in dynamic thickness information
     mascon_dim = rootgrp.createDimension("mascon", len(all_cmwe_res[0]))
-    all_cmwe_res_var = rootgrp.createVariable("all_cmwe_res", "f8", ("comparison","mascon",))
+    all_cmwe_res_var = rootgrp.createVariable("all_cmwe_res", "f8", ("n","mascon",))
     all_cmwe_res_var[:] = np.stack(all_cmwe_res, axis = 0)
     all_cmwe_res_var.units = "centimeters of water equivalent"
 

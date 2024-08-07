@@ -112,16 +112,16 @@ def points_to_mascons(mascons, I_, lats, lons, values):
     indices = np.array(range(mascons.N_mascons))[I_]
     for i, j in enumerate(indices):
     
-        if np.min(lats) > max_lats[i]:
+        if np.min(lats) > max_lats[j]:
             continue
-        if np.max(lats) < min_lats[i]:
+        if np.max(lats) < min_lats[j]:
             continue
-        if np.min(lons) > max_lons[i]:
+        if np.min(lons) > max_lons[j]:
             continue
-        if np.max(lons) < min_lons[i]:
+        if np.max(lons) < min_lons[j]:
             continue
         
-        K_ = (lats >= min_lats[i]) & (lats < max_lats[i]) & (lons >= min_lons[i]) & (lons < max_lons[i])
+        K_ = (lats >= min_lats[j]) & (lats < max_lats[j]) & (lons >= min_lons[j]) & (lons < max_lons[j])
 
         for k in range(len(values)):
             m = (values[k])[K_]
@@ -134,7 +134,7 @@ def points_to_mascons(mascons, I_, lats, lons, values):
                 continue
             if np.sum(~np.isnan(m)) == 0:
                 continue
-            (mscn_mean[k])[j] = np.nanmean(m)
+            (mscn_mean[k])[i] = np.nanmean(m)
     return mscn_mean
 
 def YYYY_MM_DD_to_days_since_Jan_0_2002(date_str):

@@ -104,6 +104,9 @@ def regrid_data(x_centers, y_centers, x, y, data):
     return output
 
 def helper_regrid_data_over_y(tup):
+    """
+    Helper function to regrid_data
+    """
     i, x_c = tup
 
     # Find indices that have x values in the right range

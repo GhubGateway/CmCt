@@ -4,6 +4,14 @@ from datetime import datetime
 
 def check_input_validity(save_nc, output_fns, single_file_nc, n_comp, model_fn_ids, n_mod_fns,
                          plot, save_plot, plot_fn, loc = None, regrid=False, extent=None, grid_size=None):
+    """
+    Checks the validity of inputs to DynamicThickness/GIS_Compare_Dynamic_Thickness.ipynb and 
+    Gravimetry/GIS_or_AIS_model_onto_GSFCmascons.ipynb
+
+    If no issues, returns (True, ""). If there is an error, returns (False, error), where error is a string
+    describing the error
+    """
+    
     if regrid:
         if (extent is None) or (grid_size is None):
             return True, "If the regrid input variable is true, the extent and grid_size variables must be supplied"
@@ -50,11 +58,26 @@ def check_input_validity(save_nc, output_fns, single_file_nc, n_comp, model_fn_i
         return True, f"Error: Input loc is equal to '{loc}'. Allowed values are 'AIS' or 'GIS'"
     return False, ""   # Passed all tests
 
+
+
+
+
 ########## CHECKING TIME ##############
 
 def time_within_bounds(year_dt, time_arr, string_1, string_2, func_time_arr_to_dt = None):
     """
-    Check if a year is inside of bounds of an string array of years, printing appropriate errors if not
+    Returns False if year_dt is outside of bounds of a array of years, and prints a description
+    of the problem. Otherwise, returns True
+
+    Parameters:
+    year_dt: A python datetime object
+    time_arr: A list or array of objects which can be converted to python datetime objects. Expected that
+              the first entry of time_arr is chronologically first in time_arr and the last entry of time_arr
+              is chronologically last
+    string_1, string_2: Strings used in error formatting
+    func_time_arr_to_dt: A function which takes one input and returns one output. Converts an entry of
+                         time_arr to a python datetime object. If None, it is assumed that time_arr contains
+                         only python datetime objects
     """
     if func_time_arr_to_dt is None:
         time_arr_start, time_arr_end = time_arr[0], time_arr[-1]
