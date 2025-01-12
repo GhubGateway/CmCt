@@ -133,7 +133,8 @@ def transformToGeodetic(gsfc, gis_ds, start_date, end_date, rho_ice,rho_water, p
     return mass_change_mod_trim, mass_change_mod
 
 
-def plotFigure(mass_change_obs, mass_change_mod_trim, mass_change_delta, gsfc, I_,start_date, end_date, polar_stereographic,loc,shapefile,plot_filename):
+def plotFigure(mass_change_obs, mass_change_mod_trim, mass_change_delta, gsfc, I_, \
+        start_date, end_date, polar_stereographic, loc, shapefile, plot_filename=None):
 
     plt.figure(figsize=(24,14)) #, dpi=300)
     
@@ -255,7 +256,7 @@ def plotFigure(mass_change_obs, mass_change_mod_trim, mass_change_delta, gsfc, I
     plt.suptitle('Gravimetry Comparison Plots', fontsize=25)
     plt.subplots_adjust(top=1.93)#0.83
     
-    plt.savefig(plot_filename)
+    if plot_filename: plt.savefig(plot_filename)
     plt.show()
 
 

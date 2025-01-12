@@ -31,3 +31,17 @@ def days_in_year(date):
             diy = 365
 
     return diy
+
+
+def dt64_to_fractional_year(dt64):
+    year = dt64.astype('datetime64[Y]').astype(int) + 1970
+    start_of_year = np.datetime64(f'{year}-01-01')
+    end_of_year = np.datetime64(f'{year + 1}-01-01')
+    return year + (dt64 - start_of_year) / (end_of_year - start_of_year)
+
+
+def dt64_to_years_months(times_dt64):
+    years  = np.array([i.astype('datetime64[Y]').astype(int) + 1970   for i in times_dt64])
+    months = np.array([i.astype('datetime64[M]').astype(int) % 12 + 1 for i in times_dt64])
+
+    return years, months
