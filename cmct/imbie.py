@@ -112,7 +112,7 @@ def process_model_data(mod_ds,time_var, IMBIE_total_mass_change_sum, \
             'basin_mass_change_sums': basin_mass_change_sums,
             'region_mass_change_sums': region_mass_change_sums
         } 
-           
+        #Update lithk_start to lithk_current 
         lithk_start = lithk_current
         
     # Return all results as a dictionary
@@ -163,9 +163,11 @@ def process_imbie_data(obs_filename,start_date_fract,end_date_fract,mass_balance
     mass_changes = []  # To store the daily mass changes
     
     for index, row in filtered_data.iterrows():
+        
         current_mass_balance = row[mass_balance_column]/12
         # Calculate the change from the previous date's balance
         mass_change = (current_mass_balance-previous_mass_balance)
+        #Update previous_mass_balance to current_mass_balance
         previous_mass_balance=current_mass_balance
         mass_changes.append(mass_change)
    
