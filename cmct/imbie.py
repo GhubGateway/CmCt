@@ -112,9 +112,7 @@ def process_model_data(mod_ds,time_var, IMBIE_total_mass_change_sum, \
             'basin_mass_change_sums': basin_mass_change_sums,
             'region_mass_change_sums': region_mass_change_sums
         } 
-        #Update lithk_start to lithk_current 
-        lithk_start = lithk_current
-        
+      
     # Return all results as a dictionary
     return model_mass_change
 
@@ -157,26 +155,22 @@ def process_imbie_data(obs_filename,start_date_fract,end_date_fract,mass_balance
     
     
     # Initialize the previous date's mass balance value to the starting mass balance
-    previous_mass_balance = mass_balance_start_value/12
+    previous_mass_balance = mass_balance_start_value
     
     # Calculate monthly mass change from the previous date for each time step
     mass_changes = []  # To store the daily mass changes
     
     for index, row in filtered_data.iterrows():
-        
-        current_mass_balance = row[mass_balance_column]/12
+        current_mass_balance = row[mass_balance_column]
         # Calculate the change from the previous date's balance
-        mass_change = (current_mass_balance-previous_mass_balance)
-        #Update previous_mass_balance to current_mass_balance
-        previous_mass_balance=current_mass_balance
+        mass_change = current_mass_balance-previous_mass_balance
         mass_changes.append(mass_change)
-   
-    
+      
     # Assign the calculated mass changes to a new column in the DataFrame
-    filtered_data['IMBIE_Mass_Change'] = mass_changes
+    imbie_mass_balance_data = pd.DataFrame({'Year': filtered_data['Year']})
+    imbie_mass_balance_data[mass_balance_column] = mass_changes
 
-
-    return filtered_data
+    return  imbie_mass_balance_data
    
     
  
@@ -192,7 +186,7 @@ def calculate_model_imbie_residuals(start_date_fract, end_date_fract, \
     # Loop through IMBIE_total_mass_change_sum to populate results
     for i, row in IMBIE_total_mass_change_sum.iterrows():
         date = row['Year']  # Ensure this matches the date format in basin_result keys
-        imbie_mass_change = row['IMBIE_Mass_Change']
+        imbie_mass_change = row[mass_balance_column]
         
         # Check if the date exists in basin_result
         if str(date) in basin_result:
@@ -237,9 +231,9 @@ def calculate_model_imbie_residuals(start_date_fract, end_date_fract, \
                 date = east_row[1]['Year']  # Assuming the 'Year' column is consistent across datasets
             
                 # Extract values for each region
-                imbie_mass_change_east = east_row[1]['IMBIE_Mass_Change']
-                imbie_mass_change_west = west_row[1]['IMBIE_Mass_Change']
-                imbie_mass_change_peninsula = peninsula_row[1]['IMBIE_Mass_Change']
+                imbie_mass_change_east = east_row[1][mass_balance_column]
+                imbie_mass_change_west = west_row[1][mass_balance_column]
+                imbie_mass_change_peninsula = peninsula_row[1][mass_balance_column]
                 
                 
                 # Check if the date exists in basin_result
