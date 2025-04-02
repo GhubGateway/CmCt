@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#
+# jupyter tool
+#
+/usr/bin/invoke_app "$@" -C "start_jupyter -A -T @tool notebooks/IMBIE/imbie_comparison.ipynb" -t cmct -u anaconda-7 -r none

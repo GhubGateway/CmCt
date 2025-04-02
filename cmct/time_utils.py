@@ -12,9 +12,10 @@ def check_datarange(time_var, start_date_cftime, end_date_cftime):
     
     # Check if the selected start and end dates are within the range
     if min_time <= start_date_cftime <= max_time and min_time <= end_date_cftime <= max_time:
-        print(f"The selected dates {{start_date_cftime}} and {{end_date_cftime}} are within the range of the model data.")
+        print(f"The selected dates {start_date_cftime} and {end_date_cftime} are within the range of the model data.")
     else:
-        raise ValueError(f"Error: The selected dates {{start_date_cftime}} or {{end_date_cftime}} are out of range. Model data time range is from {{min_time}} to {{max_time}}.")
+        #raise ValueError(f"Error: The selected dates {start_date_cftime} or {end_date_cftime} are out of range. Model data time range is from {min_time} to {max_time}.")
+        print(f"The selected dates {start_date_cftime} and {end_date_cftime} are not within the range of the model data. Please select dates within the range.")
 
 
 def days_in_year(date):
