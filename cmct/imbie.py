@@ -15,7 +15,7 @@ from datetime import timedelta
 ## Interpolate the data to each IMBIE time and calculate the time varying mass change
 def process_model_data(mod_ds,time_var, IMBIE_total_mass_change_sum, \
                        start_date_cftime, end_date_cftime, start_date_fract, end_date_fract, \
-                       rho_ice, projection, shape_filename, icesheet):
+                       rho_ice, projection, shape_filename, icesheet, multiple=False):
     
     # Model data
     lithk = mod_ds['lithk']
@@ -26,7 +26,7 @@ def process_model_data(mod_ds,time_var, IMBIE_total_mass_change_sum, \
     basins_gdf = gpd.read_file(shape_filename)
     
     # Check the selcted dates are within the range of model data
-    check_datarange(time_var,start_date_cftime, end_date_cftime)
+    check_datarange(time_var,start_date_cftime, end_date_cftime, multiple=multiple)
         
     # Set start_date as the first date in 'Year' and filtered_time_var as all subsequent dates
     start_date_imbie = start_date_fract
